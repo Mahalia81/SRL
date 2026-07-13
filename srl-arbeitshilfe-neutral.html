@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meine Arbeitshilfe</title>
+<style>
+:root{
+  --primary:#0A3254;
+  --secondary:#0E497C;
+  --mid:#3C70AB;
+  --light:#2B92D5;
+  --verylight:#BEE0FA;
+  --bg:#EDF6FD;
+  --white:#FFFFFF;
+  --ok:#2e7d46;
+  --warn:#c98a00;
+  --stop:#b3402e;
+  --radius:14px;
+  --shadow:0 2px 10px rgba(10,50,84,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:18px}
+@media(max-width:560px){html{font-size:16px}}
+body{
+  font-family:Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--primary);
+  min-height:100vh;
+}
+/* ---------- Kopfzeile mit Logo oben rechts ---------- */
+header{
+  background:var(--white);
+  border-bottom:4px solid var(--primary);
+  padding:14px 22px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  position:sticky;top:0;z-index:50;
+}
+header .titles h1{font-size:1.5rem;font-weight:bold;color:var(--primary);line-height:1.2}
+header .titles p{font-size:.95rem;color:var(--mid);margin-top:2px}
+header .clock{margin-left:auto;font-size:1.5rem;font-weight:bold;color:var(--primary);letter-spacing:1px}
+header img.logo{height:60px;width:auto;flex-shrink:0;cursor:pointer}
+main{width:100%;max-width:none;margin:0;padding:26px clamp(16px,4vw,56px) 90px}
+
+h2{font-weight:bold;color:var(--primary);font-size:1.35rem;margin-bottom:6px}
+h3{font-weight:bold;color:var(--primary);font-size:1.05rem;margin-bottom:8px}
+p.sub{color:var(--secondary);font-size:1.05rem;margin-bottom:18px}
+
+/* ---------- Phasen-Stepper ---------- */
+.stepper{display:flex;gap:8px;margin:18px 0 22px}
+.step{
+  flex:1;background:var(--white);border:2px solid var(--verylight);
+  border-radius:var(--radius);padding:10px 12px;text-align:center;
+  font-size:.95rem;color:var(--mid);position:relative;
+}
+.step .num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:26px;height:26px;border-radius:50%;
+  background:var(--verylight);color:var(--primary);font-weight:bold;margin-bottom:4px;
+}
+.step.active{border-color:var(--light);background:var(--verylight)}
+.step.active .num{background:var(--primary);color:#fff}
+.step.done{border-color:var(--mid)}
+.step.done .num{background:var(--mid);color:#fff}
+.step b{display:block;color:var(--primary)}
+
+/* ---------- Karten & Formulare ---------- */
+.card{
+  background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:22px;margin-bottom:18px;
+}
+.zeitsteller{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.zeitsteller input[type=number]{
+  width:120px;text-align:center;font-size:1.7rem;font-weight:bold;color:var(--primary);
+  padding:9px 6px;border:2px solid var(--verylight);border-radius:10px;font-family:inherit;
+}
+.zeitsteller input[type=number]:focus{outline:none;border-color:var(--light)}
+.zeiteinheit{font-weight:bold;color:var(--secondary)}
+details.optional{margin-top:18px;border:2px dashed var(--verylight);border-radius:12px}
+details.optional summary{padding:12px 14px;font-weight:bold;color:var(--mid);cursor:pointer;list-style:none;font-size:1rem}
+details.optional summary::-webkit-details-marker{display:none}
+details.optional .optbody{padding:0 14px 14px}
+label{display:block;font-weight:bold;font-size:1.05rem;margin:16px 0 6px;color:var(--primary)}
+label:first-of-type{margin-top:0}
+label .hint{font-weight:normal;color:var(--mid);font-size:.95rem;display:block;margin-top:1px}
+input[type=text],textarea,select{
+  width:100%;padding:11px 12px;border:2px solid var(--verylight);border-radius:10px;
+  font-family:inherit;font-size:1rem;color:var(--primary);background:#fff;
+}
+input[type=text]:focus,textarea:focus,select:focus{outline:none;border-color:var(--light)}
+textarea{resize:vertical;min-height:64px}
+.row{display:flex;gap:14px;flex-wrap:wrap}
+.row>div{flex:1;min-width:200px}
+
+/* Strategie-Chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips span{
+  display:inline-block;padding:9px 15px;border:2px solid var(--verylight);
+  border-radius:999px;font-size:.98rem;cursor:pointer;user-select:none;background:#fff;
+}
+.chips input:checked+span{background:var(--primary);border-color:var(--primary);color:#fff}
+.chips input:focus-visible+span{outline:3px solid var(--light);outline-offset:2px}
+
+/* Slider */
+.sliderwrap{display:flex;align-items:center;gap:14px}
+input[type=range]{flex:1;accent-color:var(--light);height:28px}
+.sliderval{
+  min-width:44px;text-align:center;font-weight:bold;font-size:1.2rem;
+  background:var(--verylight);border-radius:10px;padding:6px 0;
+}
+
+/* Ampel */
+.ampel{display:flex;gap:10px;margin-top:6px}
+.ampel button{
+  flex:1;padding:14px 8px;border:3px solid transparent;border-radius:12px;
+  font-family:inherit;font-size:.9rem;font-weight:bold;cursor:pointer;color:#fff;
+}
+.ampel .gruen{background:var(--ok)}
+.ampel .gelb{background:var(--warn)}
+.ampel .rot{background:var(--stop)}
+.ampel button.sel{border-color:var(--primary);transform:scale(1.03)}
+
+/* Buttons */
+.btn{
+  display:inline-block;padding:13px 22px;border:none;border-radius:12px;
+  font-family:inherit;font-size:1rem;font-weight:bold;cursor:pointer;
+  background:var(--primary);color:#fff;
+}
+.btn:hover{background:var(--secondary)}
+.btn.sec{background:var(--verylight);color:var(--primary)}
+.btn.sec:hover{background:#a9d4f5}
+.btn.ghost{background:none;color:var(--secondary);text-decoration:underline;padding:8px}
+.btn.danger{background:var(--stop)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btnrow{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;align-items:center}
+.btnrow .spacer{flex:1}
+
+/* Start-Liste */
+.entrylist{list-style:none;margin-top:10px}
+.entrylist li{
+  display:flex;align-items:center;gap:12px;background:var(--white);
+  border:2px solid var(--verylight);border-radius:12px;padding:12px 14px;margin-bottom:8px;
+}
+.entrylist li:hover{border-color:var(--light)}
+.entrylist .who{flex:1}
+.entrylist .who b{display:block}
+.entrylist .who small{color:var(--mid)}
+.badge{font-size:.75rem;font-weight:bold;padding:4px 10px;border-radius:999px;background:var(--verylight);color:var(--primary)}
+.badge.b2{background:#ffe9c2;color:#7a5200}
+.badge.b3{background:#d4edda;color:#1e5c31}
+
+/* Ziel-Erinnerung in Phase 2/3 */
+.zielbox{
+  background:var(--verylight);border-left:6px solid var(--primary);
+  border-radius:10px;padding:14px 16px;margin-bottom:18px;font-size:.95rem;
+}
+.zielbox b{display:block;margin-bottom:3px}
+
+/* Check-in-Verlauf */
+.checkins{list-style:none;margin-top:12px}
+.checkins li{display:flex;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--bg);font-size:.9rem}
+.dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;position:relative;top:1px}
+.dot.gruen{background:var(--ok)}.dot.gelb{background:var(--warn)}.dot.rot{background:var(--stop)}
+.checkins time{color:var(--mid);font-size:.8rem;min-width:44px}
+
+/* Werkzeugkasten */
+#toolbox{position:fixed;inset:0;background:rgba(10,50,84,.45);display:none;z-index:100}
+#toolbox.open{display:flex;justify-content:flex-end}
+#toolbox .panel{
+  width:min(440px,100%);background:var(--white);height:100%;overflow-y:auto;
+  padding:24px;box-shadow:-4px 0 18px rgba(10,50,84,.25);
+}
+#toolbox details{border:2px solid var(--verylight);border-radius:12px;margin-bottom:10px;overflow:hidden}
+#toolbox summary{
+  padding:12px 14px;font-weight:bold;cursor:pointer;color:var(--primary);
+  background:var(--verylight);list-style:none;
+}
+#toolbox summary::-webkit-details-marker{display:none}
+#toolbox details[open] summary{border-bottom:2px solid var(--verylight)}
+#toolbox .body{padding:12px 14px;font-size:.98rem;line-height:1.6}
+#toolbox .body ul{padding-left:18px;margin:6px 0}
+#toolbox .body li{margin-bottom:5px}
+.fab{
+  position:fixed;right:18px;bottom:18px;z-index:60;
+  background:var(--light);color:#fff;border:none;border-radius:999px;
+  padding:14px 20px;font-family:inherit;font-weight:bold;font-size:.95rem;
+  box-shadow:var(--shadow);cursor:pointer;
+}
+.fab:hover{background:var(--mid)}
+
+/* Lehrkraft-Tabelle */
+table{width:100%;border-collapse:collapse;font-size:.95rem;margin-top:12px}
+th{background:var(--primary);color:#fff;text-align:left;padding:9px 10px;font-weight:bold}
+td{padding:9px 10px;border-bottom:1px solid var(--verylight);vertical-align:top}
+tr:hover td{background:var(--bg)}
+.tablewrap{overflow-x:auto}
+.detail dl{display:grid;grid-template-columns:190px 1fr;gap:6px 14px;font-size:.92rem}
+.detail dt{font-weight:bold;color:var(--secondary)}
+.detail dd{white-space:pre-wrap}
+
+.toast{
+  position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
+  background:var(--primary);color:#fff;padding:12px 22px;border-radius:12px;
+  font-weight:bold;opacity:0;transition:opacity .3s;pointer-events:none;z-index:200;
+}
+.toast.show{opacity:1}
+.hidden{display:none!important}
+footer{width:100%;padding:0 clamp(16px,4vw,56px) 34px;color:var(--mid);font-size:.9rem}
+
+@media(max-width:560px){
+  header .titles h1{font-size:1rem}
+  header img.logo{height:44px}
+  .stepper{flex-direction:column}
+  .detail dl{grid-template-columns:1fr}
+  .detail dt{margin-top:8px}
+}
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important}
+}
+#toolbox .panel{width:min(520px,100%)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="titles">
+    <h1>Meine Arbeitshilfe</h1>
+    <p>Selbstreguliertes Lernen</p>
+  </div>
+  <div class="clock" id="clock" aria-label="Aktuelle Uhrzeit"></div>
+  <img class="logo" id="logoHome" role="button" tabindex="0" title="Zur Startseite" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20120%20120%22%3E%3Ccircle%20cx%3D%2260%22%20cy%3D%2260%22%20r%3D%2256%22%20fill%3D%22%230A3254%22/%3E%3Cpath%20d%3D%22M60%2038c-8-6-20-7-28-4v46c8-3%2020-2%2028%204%208-6%2020-7%2028-4V34c-8-3-20-2-28%204z%22%20fill%3D%22%23BEE0FA%22/%3E%3Cpath%20d%3D%22M60%2038v46%22%20stroke%3D%22%230A3254%22%20stroke-width%3D%224%22/%3E%3C/svg%3E" alt="Logo">
+</header>
+
+<main id="app"></main>
+
+<footer>
+  Deine Einträge werden nur in diesem Browser gespeichert. · <a href="#" id="teacherLink" style="color:var(--mid)">Lehrkraft-Bereich</a>
+</footer>
+
+<button class="fab" id="fabToolbox" type="button">🧰 Werkzeugkasten</button>
+
+<div id="toolbox" role="dialog" aria-label="Werkzeugkasten">
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <h2 style="font-size:1.2rem">Werkzeugkasten</h2>
+      <button class="btn sec" id="closeToolbox" type="button">Schließen ✕</button>
+    </div>
+
+    <details open>
+      <summary>🆘 Die Hilfekette</summary>
+      <div class="body">
+        Wenn du nicht weiterkommst, gehe die Kette Schritt für Schritt durch:
+        <ul>
+          <li><b>1. Lies</b> die Aufgabe <b>noch einmal</b> langsam durch.</li>
+          <li><b>2. Markiere</b> den <b>Operator</b> und die <b>Schlüsselwörter</b>.</li>
+          <li><b>3. Nutze</b> angegebene <b>Hilfsmittel</b> und <b>Hilfekarten</b>.</li>
+          <li><b>4. Bitte</b> eine Mitschülerin oder einen Mitschüler um Hilfe.</li>
+          <li><b>5. Frage</b> bei deiner <b>Lehrkraft</b> nach.</li>
+        </ul>
+        💡 <b>Operator</b> = das Wort, das dir sagt, <i>wie</i> du die Aufgabe bearbeiten sollst.<br>
+        💡 <b>Schlüsselwörter</b> = die Wörter, die dir das <i>Thema</i> vorgeben.
+      </div>
+    </details>
+
+    <details>
+      <summary>🔑 Operatoren verstehen</summary>
+      <div class="body">
+        <ul>
+          <li><b>Nennen:</b> knapp und präzise aufzählen, Stichpunkte reichen. <i>Nenne Lehrer, bei denen du Unterricht hast.</i></li>
+          <li><b>Beschreiben:</b> strukturiert und ohne Wertung wiedergeben, Fachsprache, ganze Sätze. <i>Beschreibe den Weg zur Turnhalle.</i></li>
+          <li><b>Vergleichen:</b> Gemeinsamkeiten und Unterschiede gegenüberstellen, gern als Tabelle. <i>Vergleiche Schule vor 2 Jahren und heute.</i></li>
+          <li><b>Zusammenfassen:</b> das Wichtigste kurz in eigenen Worten wiedergeben. <i>Fasse den Text über die Geschichte deiner Schule zusammen.</i></li>
+          <li><b>Einordnen:</b> etwas in einen größeren Zusammenhang stellen und den Zusammenhang beschreiben. <i>Ordne das Aussterben der Dinosaurier in die Erdzeitgeschichte ein.</i></li>
+          <li><b>Erklären:</b> Zusammenhänge verständlich machen, ohne Wertung. <i>Erkläre die Entstehung einer Sonnenfinsternis.</i></li>
+          <li><b>Erläutern:</b> wie Erklären – aber mit Beispielen. <i>Erläutere die Organisation des Mittagessens an deiner Schule.</i></li>
+          <li><b>Begründen:</b> Gründe und Beispiele bringen, die eine Aussage stützen. <i>Begründe die Notwendigkeit von Impfungen.</i></li>
+          <li><b>Beurteilen:</b> einschätzen und die eigene Meinung mit Gründen belegen. <i>Beurteile Chancen und Risiken von Kernenergie.</i></li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>🎯 Gute (SMARTe) Ziele setzen</summary>
+      <div class="body">
+        Ein gutes Ziel ist <b>konkret, machbar und überprüfbar</b>.
+        <ul>
+          <li>❌ „Ich mache Mathe.“</li>
+          <li>✅ „Bis zum Ende der Stunde habe ich Aufgabe 1–4 gelöst und mit dem Lösungsblatt kontrolliert.“</li>
+        </ul>
+        Merkhilfe <b>SMART</b>: <b>s</b>pezifisch · <b>m</b>essbar · <b>a</b>ttraktiv · <b>r</b>ealistisch · <b>t</b>erminiert („bis zum Ende der Stunde“).
+      </div>
+    </details>
+
+    <details>
+      <summary>🪜 Aufgaben in Schritte zerlegen</summary>
+      <div class="body">
+        Große Aufgaben wirken schwer – kleine Schritte nicht.
+        <ul>
+          <li>Schreib 2–4 Teilschritte auf.</li>
+          <li>Beginne mit dem leichtesten Schritt – so kommst du in Schwung.</li>
+          <li>Hake jeden Schritt ab. Abhaken motiviert!</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>🧠 Blurting – teste dich selbst</summary>
+      <div class="body">
+        Perfekt nach dem Lernen eines Themas, dauert nur ca. 5 Minuten:
+        <ul>
+          <li><b>1.</b> Nimm ein leeres Blatt.</li>
+          <li><b>2.</b> Schreib 5 Minuten lang <b>alles</b> auf, was du zum Thema weißt – ohne Ordnung, ohne Pause, egal in welcher Reihenfolge.</li>
+          <li><b>3.</b> Vergleiche mit deinen Unterlagen: Was fehlt? Das sind deine Lücken – genau da lernst du weiter.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>🔁 2×3×4-Methode (Vokabeln &amp; Definitionen)</summary>
+      <div class="body">
+        Zum schnellen Festigen von Vokabeln, Definitionen oder Formeln:
+        <ul>
+          <li><b>2× lesen:</b> einen kleinen Abschnitt zweimal gründlich durchlesen.</li>
+          <li><b>3× aufsagen &amp; aufschreiben:</b> Unterlagen zur Seite, dreimal laut in eigenen Worten erklären und zusätzlich aufschreiben.</li>
+          <li><b>4× wiederholen:</b> mit Abstand – z. B. am Ende der Stunde noch einmal, dann morgen, dann nach ein paar Tagen.</li>
+        </ul>
+        Das laute Aufsagen zwingt dein Gehirn, aktiv nach den richtigen Worten zu suchen – so bleibt es hängen.
+      </div>
+    </details>
+
+    <details>
+      <summary>🔤 ABC-Liste (Ideen sammeln)</summary>
+      <div class="body">
+        Schnelles Brainstorming in 2–3 Minuten:
+        <ul>
+          <li><b>1.</b> Schreib die Buchstaben A–Z untereinander und wähle dein Thema.</li>
+          <li><b>2.</b> Stelle den Timer auf 2–3 Minuten.</li>
+          <li><b>3.</b> Wandere mit den Augen über die Buchstaben und notiere Begriffe zum Thema, wie sie dir einfallen.</li>
+          <li><b>4.</b> Zähle am Ende: Wie viele hast du geschafft? Beim nächsten Mal schlägst du deinen Rekord.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>🧦 Störung? Schnuller, Socke oder Dachziegel</summary>
+      <div class="body">
+        Nicht jedes Problem verdient sofort deine Aufmerksamkeit. Frag dich: <i>Was passiert, wenn ich es bis morgen liegen lasse?</i>
+        <ul>
+          <li><b>🍼 Schnuller</b> – nichts passiert, löst sich oft von selbst. → Kurz notieren, weiterarbeiten.</li>
+          <li><b>🧦 Socke</b> – nervig, aber nicht gefährlich. → Sammeln und später in einem Block erledigen.</li>
+          <li><b>🧱 Dachziegel</b> – wird deutlich schlimmer. → Sofort handeln oder Hilfe holen.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>🧗 Lernzonenmodell</summary>
+      <div class="body">
+        <ul>
+          <li><b>Komfortzone:</b> alles leicht und bekannt – gemütlich, aber du lernst nichts Neues.</li>
+          <li><b>Lernzone:</b> es fordert dich, du machst Fehler – <b>genau hier findet echtes Lernen statt!</b></li>
+          <li><b>Panikzone:</b> zu viel auf einmal, der Kopf macht dicht – hol dir Unterstützung oder mach eine kurze Pause.</li>
+        </ul>
+        Gehe immer wieder bewusst in die Lernzone.
+      </div>
+    </details>
+
+    <details>
+      <summary>🧲 Wenn-dann-Pläne gegen Ablenkung</summary>
+      <div class="body">
+        Überlege <b>vorher</b>, was dich stören könnte – und was du dann tust:
+        <ul>
+          <li>Wenn ich ans Handy denke, <b>dann</b> lege ich es in die Tasche und arbeite weiter.</li>
+          <li>Wenn mein Nachbar quatscht, <b>dann</b> sage ich freundlich, dass ich gerade arbeite.</li>
+          <li>Wenn ich müde werde, <b>dann</b> trinke ich Wasser und strecke mich kurz.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>💪 Motivation</summary>
+      <div class="body">
+        <ul>
+          <li>Erinnere dich an dein <b>Warum</b>: Wofür brauchst du das?</li>
+          <li>Vergleiche dich mit <b>dir selbst von gestern</b>, nicht mit anderen.</li>
+          <li>Fehler sind Futter fürs Gehirn – dort passiert das Lernen.</li>
+          <li>Belohne dich nach getaner Arbeit mit etwas Kleinem.</li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+/* =========================================================
+   EINSTELLUNGEN — hier anpassen
+   ========================================================= */
+const TEACHER_PASSWORD = "lernen26";   // Passwort für den Lehrkraft-Bereich
+const STORAGE_KEY = "srl_arbeitshilfe_v1";
+
+/* ---------- Speicher (localStorage mit Fallback) ---------- */
+let memoryStore = [];
+function loadEntries(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch(e){ return memoryStore; }
+}
+function saveEntries(list){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
+  catch(e){ memoryStore = list; }
+}
+
+/* ---------- Hilfsfunktionen ---------- */
+const $ = sel => document.querySelector(sel);
+const app = document.getElementById("app");
+function esc(s){ return String(s??"").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function todayStr(){ return new Date().toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit",year:"numeric"}); }
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+function timeStr(){ return new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"}); }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+function statusOf(e){ return e.reflexion ? 3 : (e.checkins&&e.checkins.length ? 2 : 1); }
+function statusBadge(e){
+  const s = statusOf(e);
+  if(s===3) return '<span class="badge b3">✓ Reflexion fertig</span>';
+  if(s===2) return '<span class="badge b2">arbeitet</span>';
+  return '<span class="badge">geplant</span>';
+}
+
+/* ---------- Ampel-Zeitscheibe (wie eine Zeitdauer-Uhr) ---------- */
+let tickInterval = null;
+function stopTick(){ if(tickInterval){ clearInterval(tickInterval); tickInterval=null; } }
+
+function parseDauerSec(d){ const m = parseInt(d,10); return (isNaN(m)?25:m)*60; }
+function timerRemaining(e){
+  const total = parseDauerSec(e.plan.dauer);
+  const t = e.timer;
+  if(!t) return total;
+  if(t.endAt) return Math.max(0, Math.round((t.endAt - Date.now())/1000));
+  return Math.max(0, Math.min(total, t.remaining ?? total));
+}
+function arcPath(cx,cy,r,a0,a1){
+  if(a1-a0 >= 359.9) return `M ${cx-r} ${cy} A ${r} ${r} 0 1 1 ${cx+r} ${cy} A ${r} ${r} 0 1 1 ${cx-r} ${cy} Z`;
+  const rad = a => (a-90)*Math.PI/180;
+  const x0=cx+r*Math.cos(rad(a0)), y0=cy+r*Math.sin(rad(a0));
+  const x1=cx+r*Math.cos(rad(a1)), y1=cy+r*Math.sin(rad(a1));
+  const large = (a1-a0)>180 ? 1 : 0;
+  return `M ${cx} ${cy} L ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 ${large} 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`;
+}
+function timerSvg(total, remaining){
+  const cx=100, cy=100, r=86;
+  const elapsed = total - remaining;
+  const rot = 120, gelb = 300;               // rot: letzte 2 min, gelb: 5–2 min vor Schluss
+  const zones = [
+    [0, Math.max(0,total-gelb), "#2e7d46"],
+    [Math.max(0,total-gelb), Math.max(0,total-rot), "#c98a00"],
+    [Math.max(0,total-rot), total, "#b3402e"]
+  ];
+  const ang = s => s/total*360;
+  let paths = zones.filter(z=>z[1]>z[0]).map(z=>`<path d="${arcPath(cx,cy,r,ang(z[0]),ang(z[1]))}" fill="${z[2]}"/>`).join("");
+  if(elapsed>0) paths += `<path d="${arcPath(cx,cy,r,0,ang(Math.min(elapsed,total)))}" fill="#DFE9F2"/>`;
+  const mm = Math.floor(remaining/60), ss = String(remaining%60).padStart(2,"0");
+  return `
+    <circle cx="${cx}" cy="${cy}" r="${r+7}" fill="#fff" stroke="#0A3254" stroke-width="4"/>
+    ${paths}
+    <circle cx="${cx}" cy="${cy}" r="48" fill="#fff" stroke="#BEE0FA" stroke-width="3"/>
+    <text x="${cx}" y="${cy+2}" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="30" font-weight="bold" fill="#0A3254">${mm}:${ss}</text>
+    <text x="${cx}" y="${cy+24}" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="10" letter-spacing="2" fill="#3C70AB">${remaining>0?"NOCH":"ZEIT UM!"}</text>
+    <rect x="${cx-1.5}" y="${cy-r-9}" width="3" height="12" fill="#0A3254"/>`;
+}
+function beep(){
+  try{
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    [0,0.4,0.8].forEach(t=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.frequency.value=880; o.connect(g); g.connect(ctx.destination);
+      g.gain.setValueAtTime(0.15, ctx.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+t+0.3);
+      o.start(ctx.currentTime+t); o.stop(ctx.currentTime+t+0.35);
+    });
+  }catch(err){}
+}
+
+function fachLB(p){
+  return esc(p.fach) + (p.lernbereich ? " · LP " + p.lernbereich : "");
+}
+function aufgabeInfo(p){
+  const teile = [];
+  if(p.aufgabe) teile.push(esc(p.aufgabe));
+  if(p.typ) teile.push(esc(p.typ));
+  if(p.sterne) teile.push("⭐".repeat(p.sterne));
+  return teile.join(" · ");
+}
+
+const STRATEGIEN = [
+  "In Teilschritte zerlegen","Erst ein Beispiel anschauen","Blurting (Selbsttest)",
+  "Leicht vor schwer","Laut erklären","Skizze / Mindmap","ABC-Liste","Mit Partner:in kontrollieren"
+];
+
+/* =========================================================
+   ANSICHT: Start
+   ========================================================= */
+function viewStart(){
+  stopTick();
+  const entries = loadEntries().filter(e=>e.iso===todayISO() && !e.archiviert);
+  const open = entries.filter(e=>statusOf(e)<3);
+  const names = [...new Set(loadEntries().map(e=>e.name))].sort((a,b)=>a.localeCompare(b,"de"));
+
+  app.innerHTML = `
+    <h2>Hallo! 👋</h2>
+    <p class="sub">Heute ist ${todayStr()}. Plane zuerst kurz dein Lernen – dann leg los.</p>
+
+    <div class="card">
+      <h3>Neu starten</h3>
+      <label for="nameInput">Wie heißt du?
+        <span class="hint">Dein Vorname reicht. Gibt es ihn doppelt in der Klasse, häng den ersten Buchstaben deines Nachnamens an (z. B. „Mia K.“).</span>
+      </label>
+      <input type="text" id="nameInput" list="nameList" autocomplete="off" placeholder="z. B. Mia">
+      <datalist id="nameList">${names.map(n=>`<option value="${esc(n)}">`).join("")}</datalist>
+      <div class="btnrow">
+        <button class="btn" id="startBtn" type="button">Lernplanung beginnen →</button>
+      </div>
+    </div>
+
+    ${open.length ? `
+    <div class="card">
+      <h3>Weitermachen (heute schon geplant)</h3>
+      <p class="sub" style="margin-bottom:4px">Tippe auf deinen Namen, um einen Check-in zu machen oder zurückzuschauen.</p>
+      <ul class="entrylist">
+        ${open.map(e=>`
+          <li>
+            <div class="who"><b>${esc(e.name)}</b><small>${fachLB(e.plan)} · Ziel: ${esc(e.plan.ziel).slice(0,60)}${e.plan.ziel.length>60?"…":""}</small></div>
+            ${statusBadge(e)}
+            <button class="btn sec" data-cont="${e.id}" type="button">Öffnen</button>
+          </li>`).join("")}
+      </ul>
+    </div>`:""}
+  `;
+
+  $("#startBtn").onclick = ()=>{
+    const name = $("#nameInput").value.trim();
+    if(name.length<2){ toast("Bitte gib deinen Namen ein."); $("#nameInput").focus(); return; }
+    viewPlan(name);
+  };
+  $("#nameInput").addEventListener("keydown",e=>{ if(e.key==="Enter") $("#startBtn").click(); });
+  app.querySelectorAll("[data-cont]").forEach(b=>{
+    b.onclick = ()=>{
+      const e = loadEntries().find(x=>x.id===b.dataset.cont);
+      if(!e) return;
+      statusOf(e)===1||statusOf(e)===2 ? viewMonitor(e.id) : viewStart();
+    };
+  });
+}
+
+/* =========================================================
+   ANSICHT: Phase 1 — Planen
+   ========================================================= */
+function stepper(active){
+  const steps = [["Planen","Vor der Arbeit"],["Dranbleiben","Während der Arbeit"],["Zurückschauen","Nach der Arbeit"]];
+  return `<div class="stepper">${steps.map((s,i)=>`
+    <div class="step ${i+1===active?"active":i+1<active?"done":""}">
+      <span class="num">${i+1<active?"✓":i+1}</span><b>${s[0]}</b>${s[1]}
+    </div>`).join("")}</div>`;
+}
+
+function viewPlan(name){
+  stopTick();
+  const faecher = [...new Set(loadEntries().map(e=>e.plan.fach).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"de"));
+  app.innerHTML = `
+    <h2>Schritt 1: Planen</h2>
+    <p class="sub">${esc(name)}, das dauert nur 1–2 Minuten – fast alles kannst du antippen.</p>
+    ${stepper(1)}
+    <div class="card">
+      <label for="fach">Fach</label>
+      <input type="text" id="fach" list="fachList" placeholder="z. B. Deutsch" autocomplete="off">
+      <datalist id="fachList">${faecher.map(f=>`<option value="${esc(f)}">`).join("")}</datalist>
+
+      <label>Lernplan / Lernbereich</label>
+      <div class="chips" id="lbChips">
+        ${[1,2,3,4,5,6].map(n=>`<label style="margin:0"><input type="radio" name="lb" value="${n}"><span>Nr. ${n}</span></label>`).join("")}
+      </div>
+
+      <label for="aufgabe">Welche Aufgabe nimmst du dir vor?</label>
+      <input type="text" id="aufgabe" placeholder="z. B. Aufgabe 3, Seite 2" autocomplete="off">
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label style="margin-top:0">Pflicht oder Wahl?</label>
+          <div class="chips" id="typChips">
+            <label style="margin:0"><input type="radio" name="typ" value="Pflicht"><span>📌 Pflichtaufgabe</span></label>
+            <label style="margin:0"><input type="radio" name="typ" value="Wahl"><span>🙋 Wahlaufgabe</span></label>
+          </div>
+        </div>
+        <div>
+          <label style="margin-top:0">Schwierigkeit</label>
+          <div class="chips" id="sterneChips">
+            <label style="margin:0"><input type="radio" name="sterne" value="1"><span>⭐</span></label>
+            <label style="margin:0"><input type="radio" name="sterne" value="2"><span>⭐⭐</span></label>
+            <label style="margin:0"><input type="radio" name="sterne" value="3"><span>⭐⭐⭐</span></label>
+          </div>
+        </div>
+      </div>
+
+      <label for="ziel">Dein Ziel für heute
+        <span class="hint">Ein Satz reicht: Woran erkennst du am Ende, dass du es geschafft hast?</span></label>
+      <textarea id="ziel" placeholder="Bis zum Ende der Stunde habe ich …"></textarea>
+
+      <label for="zeitwert">Wie viel Zeit planst du ein?
+        <span class="hint">Stell deine Arbeitszeit ein – sie erscheint danach auf deiner Uhr.</span></label>
+      <div class="zeitsteller">
+        <button type="button" class="btn sec" id="zeitMinus" aria-label="5 Minuten weniger">−5</button>
+        <input type="number" id="zeitwert" min="5" max="90" step="5" value="30" inputmode="numeric">
+        <span class="zeiteinheit">Minuten</span>
+        <button type="button" class="btn sec" id="zeitPlus" aria-label="5 Minuten mehr">+5</button>
+      </div>
+
+      <label for="zuversicht">Wie sicher bist du, dass du dein Ziel schaffst?</label>
+      <div class="sliderwrap">
+        <span>😕</span>
+        <input type="range" id="zuversicht" min="1" max="10" value="6"
+          oninput="document.getElementById('zv').textContent=this.value">
+        <span>😄</span>
+        <div class="sliderval" id="zv">6</div>
+      </div>
+
+      <details class="optional">
+        <summary>➕ Genauer planen (freiwillig, für Profis)</summary>
+        <div class="optbody">
+          <label>Welche Strategien willst du nutzen?</label>
+          <div class="chips" id="stratChips">
+            ${STRATEGIEN.map((s,i)=>`<label style="margin:0"><input type="checkbox" value="${esc(s)}" id="st${i}"><span>${esc(s)}</span></label>`).join("")}
+          </div>
+          <label for="hilfsmittel">Was brauchst du dafür?</label>
+          <input type="text" id="hilfsmittel" placeholder="z. B. Buch, Lösungsblatt, Wörterbuch" autocomplete="off">
+          <label for="wenndann">Wenn-dann-Plan gegen Störungen</label>
+          <textarea id="wenndann" placeholder="Wenn mich mein Handy ablenkt, dann …"></textarea>
+        </div>
+      </details>
+
+      <div class="btnrow">
+        <button class="btn ghost" id="abbrechen" type="button">← Zurück</button>
+        <span class="spacer"></span>
+        <button class="btn" id="savePlan" type="button">Plan speichern &amp; loslegen ✓</button>
+      </div>
+    </div>
+  `;
+
+  $("#abbrechen").onclick = viewStart;
+  const zw = $("#zeitwert");
+  const clampZeit = ()=>{ let v = parseInt(zw.value,10); if(isNaN(v)) v = 30; zw.value = Math.max(5, Math.min(90, v)); };
+  $("#zeitMinus").onclick = ()=>{ clampZeit(); zw.value = Math.max(5, +zw.value - 5); };
+  $("#zeitPlus").onclick  = ()=>{ clampZeit(); zw.value = Math.min(90, +zw.value + 5); };
+  $("#savePlan").onclick = ()=>{
+    const get = id => $("#"+id).value.trim();
+    const radio = n => app.querySelector(`input[name="${n}"]:checked`);
+    if(!get("fach")){ toast("Trag bitte das Fach ein."); $("#fach").focus(); return; }
+    if(!radio("lb")){ toast("Tippe an: In welchem Lernplan arbeitest du?"); return; }
+    if(!radio("typ")){ toast("Tippe an: Pflicht- oder Wahlaufgabe?"); return; }
+    if(!radio("sterne")){ toast("Tippe an: Wie viele Sterne hat die Aufgabe?"); return; }
+    if(!get("ziel")){ toast("Ohne Ziel kein Plan – ein Satz reicht."); $("#ziel").focus(); return; }
+    clampZeit();
+    const zeitMin = parseInt($("#zeitwert").value,10);
+    if(!zeitMin || zeitMin < 5){ toast("Stell noch deine Arbeitszeit ein."); $("#zeitwert").focus(); return; }
+    const strategien = [...app.querySelectorAll("#stratChips input:checked")].map(c=>c.value);
+    const entry = {
+      id: uid(), name, iso: todayISO(), datum: todayStr(), erstellt: timeStr(),
+      plan:{
+        fach:get("fach"), lernbereich:+radio("lb").value, aufgabe:get("aufgabe"),
+        typ:radio("typ").value, sterne:+radio("sterne").value,
+        ziel:get("ziel"), kriterium:"",
+        strategien, dauer:zeitMin+" min", hilfsmittel:get("hilfsmittel"),
+        wenndann:get("wenndann"), zuversicht:+$("#zuversicht").value
+      },
+      checkins:[], reflexion:null
+    };
+    const list = loadEntries(); list.push(entry); saveEntries(list);
+    viewHandoff(entry.id);
+  };
+}
+
+/* Übergabe-Bildschirm: Gerät weitergeben oder selbst weiterarbeiten */
+function viewHandoff(id){
+  stopTick();
+  const e = loadEntries().find(x=>x.id===id);
+  app.innerHTML = `
+    <div class="card" style="text-align:center;padding:40px 22px">
+      <h2>Super geplant, ${esc(e.name)}! ✅</h2>
+      <p class="sub" style="margin:10px 0 4px">Dein Ziel:</p>
+      <div class="zielbox" style="text-align:left;max-width:520px;margin:0 auto 22px"><b>🎯 ${esc(e.plan.ziel)}</b>${aufgabeInfo(e.plan)}</div>
+      <p class="sub">Jetzt: loslegen! Komm zwischendurch für einen <b>Check-in</b> zurück.</p>
+      <div class="btnrow" style="justify-content:center">
+        <button class="btn sec" id="toMonitor" type="button">Ich arbeite an diesem Gerät weiter</button>
+        <button class="btn" id="toStart" type="button">Gerät weitergeben – nächste:r bitte →</button>
+      </div>
+    </div>`;
+  $("#toStart").onclick = viewStart;
+  $("#toMonitor").onclick = ()=>viewMonitor(id);
+}
+
+/* =========================================================
+   ANSICHT: Phase 2 — Dranbleiben (Monitoring)
+   ========================================================= */
+function viewMonitor(id){
+  stopTick();
+  const e = loadEntries().find(x=>x.id===id);
+  if(!e){ viewStart(); return; }
+  let ampelWahl = null;
+
+  app.innerHTML = `
+    <h2>Schritt 2: Dranbleiben</h2>
+    <p class="sub">${esc(e.name)} · ${fachLB(e.plan)}${e.plan.typ||e.plan.sterne?" · "+aufgabeInfo(e.plan):""} · geplante Zeit: ${esc(e.plan.dauer)}</p>
+    ${stepper(2)}
+    <div class="zielbox"><b>🎯 Dein Ziel:</b>${esc(e.plan.ziel)}
+      ${e.plan.wenndann?`<div style="margin-top:8px"><b>🧲 Dein Wenn-dann-Plan:</b>${esc(e.plan.wenndann)}</div>`:""}
+    </div>
+
+    <div class="card" style="text-align:center">
+      <h3>⏱️ Deine Zeit: ${esc(e.plan.dauer)}</h3>
+      <svg id="timerSvg" viewBox="0 0 200 200" style="width:min(230px,65vw);margin:8px auto;display:block"></svg>
+      <div class="btnrow" style="justify-content:center;margin-top:6px">
+        <button class="btn" id="timerToggle" type="button">▶ Start</button>
+        <button class="btn sec" id="timerReset" type="button">↺ Zurücksetzen</button>
+      </div>
+      <p class="sub" style="margin:10px 0 0;font-size:.92rem">Grün: alles gut · Gelb: letzte 5 Minuten · Rot: Endspurt</p>
+    </div>
+
+    <div class="card">
+      <h3>Check-in: Wie läuft es gerade?</h3>
+      <div class="ampel">
+        <button class="gruen" data-a="gruen" type="button">🟢 Läuft!<br><small>Ich bin auf Kurs.</small></button>
+        <button class="gelb" data-a="gelb" type="button">🟡 Geht so<br><small>Ich bin etwas abgekommen.</small></button>
+        <button class="rot" data-a="rot" type="button">🔴 Hänge fest<br><small>Ich brauche eine Idee.</small></button>
+      </div>
+      <label for="cnote">Kurze Notiz <span class="hint">Was läuft gut? Was stört? Wo hängst du?</span></label>
+      <textarea id="cnote" placeholder="optional"></textarea>
+      <div class="btnrow">
+        <button class="btn" id="saveCheck" type="button">Check-in speichern</button>
+      </div>
+      ${e.checkins.length?`
+        <h3 style="margin-top:22px">Deine bisherigen Check-ins</h3>
+        <ul class="checkins">
+          ${e.checkins.map(c=>`<li><span class="dot ${c.ampel}"></span><time>${esc(c.zeit)}</time><span>${esc(c.notiz)||"<i>ohne Notiz</i>"}</span></li>`).join("")}
+        </ul>`:""}
+    </div>
+
+    <div class="btnrow">
+      <button class="btn ghost" id="back" type="button">← Zur Startseite (Gerät weitergeben)</button>
+      <span class="spacer"></span>
+      <button class="btn" id="toReflect" type="button">Ich bin fertig → Zurückschauen</button>
+    </div>
+  `;
+
+  /* --- Timer --- */
+  const total = parseDauerSec(e.plan.dauer);
+  let finished = timerRemaining(e)===0 && !!e.timer;
+  function isRunning(){ const en = loadEntries().find(x=>x.id===id); return !!(en && en.timer && en.timer.endAt); }
+  function paint(){
+    const en = loadEntries().find(x=>x.id===id); if(!en) return;
+    const rem = timerRemaining(en);
+    const svg = $("#timerSvg"); if(!svg) return;
+    svg.innerHTML = timerSvg(total, rem);
+    $("#timerToggle").textContent = isRunning() ? "⏸ Pause" : "▶ Start";
+    if(rem===0 && isRunning() && !finished){
+      finished = true;
+      const list = loadEntries(); const x = list.find(y=>y.id===id);
+      x.timer = {remaining:0}; saveEntries(list);
+      beep(); toast("⏱️ Zeit um! Mach den letzten Check-in oder schau zurück.");
+      $("#timerToggle").textContent = "▶ Start";
+    }
+  }
+  $("#timerToggle").onclick = ()=>{
+    const list = loadEntries(); const en = list.find(x=>x.id===id); if(!en) return;
+    if(en.timer && en.timer.endAt){
+      en.timer = {remaining: timerRemaining(en)};            // Pause
+    }else{
+      let rem = timerRemaining(en);
+      if(rem===0) rem = total;                               // nach Ablauf: neu starten
+      en.timer = {endAt: Date.now() + rem*1000};
+      finished = false;
+    }
+    saveEntries(list); paint();
+  };
+  $("#timerReset").onclick = ()=>{
+    const list = loadEntries(); const en = list.find(x=>x.id===id); if(!en) return;
+    en.timer = null; finished = false; saveEntries(list); paint();
+  };
+  paint();
+  tickInterval = setInterval(paint, 1000);
+
+  app.querySelectorAll(".ampel button").forEach(b=>{
+    b.onclick = ()=>{
+      ampelWahl = b.dataset.a;
+      app.querySelectorAll(".ampel button").forEach(x=>x.classList.remove("sel"));
+      b.classList.add("sel");
+    };
+  });
+  $("#saveCheck").onclick = ()=>{
+    if(!ampelWahl){ toast("Wähle zuerst 🟢, 🟡 oder 🔴."); return; }
+    const list = loadEntries();
+    const en = list.find(x=>x.id===id);
+    en.checkins.push({zeit:timeStr(), ampel:ampelWahl, notiz:$("#cnote").value.trim()});
+    saveEntries(list);
+    if(ampelWahl==="rot"){ toast("Gespeichert. Tipp: Werkzeugkasten → „Die Hilfekette“ 🧰"); }
+    else toast("Check-in gespeichert ✓");
+    viewMonitor(id);
+  };
+  $("#back").onclick = viewStart;
+  $("#toReflect").onclick = ()=>viewReflect(id);
+}
+
+/* =========================================================
+   ANSICHT: Phase 3 — Zurückschauen (Reflexion)
+   ========================================================= */
+function viewReflect(id){
+  stopTick();
+  const e = loadEntries().find(x=>x.id===id);
+  if(!e){ viewStart(); return; }
+
+  app.innerHTML = `
+    <h2>Schritt 3: Zurückschauen</h2>
+    <p class="sub">${esc(e.name)}, geschafft! Jetzt kurz zurückschauen – so lernst du fürs nächste Mal.</p>
+    ${stepper(3)}
+    <div class="zielbox"><b>🎯 Dein Ziel war:</b>${esc(e.plan.ziel)}
+      ${e.plan.kriterium?`<div style="margin-top:8px"><b>✅ Daran wolltest du es erkennen:</b>${esc(e.plan.kriterium)}</div>`:""}
+    </div>
+
+    <div class="card">
+      <label>Hast du dein Ziel erreicht?</label>
+      <div class="chips" id="zielChips">
+        <label style="margin:0"><input type="radio" name="ze" value="ja"><span>✅ Ja, ganz</span></label>
+        <label style="margin:0"><input type="radio" name="ze" value="teilweise"><span>🟡 Teilweise</span></label>
+        <label style="margin:0"><input type="radio" name="ze" value="nein"><span>❌ Noch nicht</span></label>
+      </div>
+
+      <label for="next">Was nimmst du dir fürs nächste Mal mit?
+        <span class="hint">Ein Satz reicht: Was machst du wieder so – oder anders?</span></label>
+      <textarea id="next" placeholder="Nächstes Mal werde ich …"></textarea>
+
+      <label for="zufrieden">Wie zufrieden bist du mit deiner Arbeit heute?</label>
+      <div class="sliderwrap">
+        <span>😕</span>
+        <input type="range" id="zufrieden" min="1" max="10" value="6"
+          oninput="document.getElementById('zf').textContent=this.value">
+        <span>😄</span>
+        <div class="sliderval" id="zf">6</div>
+      </div>
+
+      <details class="optional">
+        <summary>➕ Genauer zurückschauen (freiwillig)</summary>
+        <div class="optbody">
+          <label for="gut">Was hat gut funktioniert – und warum?</label>
+          <textarea id="gut" placeholder="z. B. Die Strategie „erst Beispiel anschauen“ hat mir geholfen, weil …"></textarea>
+          <label for="schwer">Was war schwierig?</label>
+          <textarea id="schwer" placeholder="z. B. Ich habe mich oft ablenken lassen, als …"></textarea>
+        </div>
+      </details>
+
+      <div class="btnrow">
+        <button class="btn ghost" id="back" type="button">← Zurück</button>
+        <span class="spacer"></span>
+        <button class="btn" id="saveRef" type="button">Reflexion speichern ✓</button>
+      </div>
+    </div>
+  `;
+
+  $("#back").onclick = ()=>viewMonitor(id);
+  $("#saveRef").onclick = ()=>{
+    const ze = app.querySelector('input[name="ze"]:checked');
+    if(!ze){ toast("Sag kurz: Ziel erreicht – ja, teilweise oder nein?"); return; }
+    if(!$("#next").value.trim()){ toast("Schreib noch einen Satz: Was machst du nächstes Mal?"); $("#next").focus(); return; }
+    const list = loadEntries();
+    const en = list.find(x=>x.id===id);
+    en.reflexion = {
+      zielErreicht: ze.value,
+      gut: $("#gut").value.trim(),
+      schwierig: $("#schwer").value.trim(),
+      naechstesMal: $("#next").value.trim(),
+      zufriedenheit: +$("#zufrieden").value,
+      zeit: timeStr()
+    };
+    saveEntries(list);
+    viewDone(en);
+  };
+}
+
+function viewDone(e){
+  stopTick();
+  const diff = e.reflexion.zufriedenheit - e.plan.zuversicht;
+  app.innerHTML = `
+    <div class="card" style="text-align:center;padding:44px 22px">
+      <h2>Stark, ${esc(e.name)}! 🎉</h2>
+      <p class="sub" style="margin:12px auto;max-width:480px">
+        Du hast heute geplant, gearbeitet und zurückgeschaut – genau so funktioniert selbstreguliertes Lernen.
+        ${diff>0?"Und du warst am Ende zufriedener, als du vorher gedacht hast. 💪":""}
+      </p>
+      <div class="btnrow" style="justify-content:center">
+        <button class="btn" id="toStart" type="button">Fertig – Gerät weitergeben →</button>
+      </div>
+    </div>`;
+  $("#toStart").onclick = viewStart;
+}
+
+/* =========================================================
+   LEHRKRAFT-BEREICH
+   ========================================================= */
+function viewTeacher(){
+  const pw = prompt("Passwort für den Lehrkraft-Bereich:");
+  if(pw===null) return;
+  if(pw!==TEACHER_PASSWORD){ toast("Falsches Passwort."); return; }
+  renderTeacher();
+}
+
+function renderTeacher(filterISO, archiv=false){
+  stopTick();
+  const alle = loadEntries();
+  const all = alle.filter(e => archiv ? !!e.archiviert : !e.archiviert)
+                  .sort((a,b)=> (b.iso+b.erstellt).localeCompare(a.iso+a.erstellt));
+  const nArchiv = alle.filter(e=>e.archiviert).length;
+  const dates = [...new Set(all.map(e=>e.iso))].sort().reverse();
+  const iso = (filterISO && dates.includes(filterISO)) ? filterISO
+            : (dates.includes(todayISO()) ? todayISO() : (dates[0]||todayISO()));
+  const list = all.filter(e=>e.iso===iso);
+  const fertig = list.filter(e=>statusOf(e)===3).length;
+
+  const ampelSym = a => a==="gruen"?"🟢":a==="gelb"?"🟡":"🔴";
+
+  app.innerHTML = `
+    <h2>Lehrkraft-Bereich ${archiv?"– 🗂 Archiv":""}</h2>
+    <p class="sub">${all.length} Einträge ${archiv?"im Archiv":"aktuell"} · ${list.length} am gewählten Tag · davon ${fertig} mit Reflexion
+      ${!archiv&&nArchiv?` · <a href="#" id="toArchiv" style="color:var(--mid)">Archiv anzeigen (${nArchiv})</a>`:""}
+      ${archiv?` · <a href="#" id="toAktuell" style="color:var(--mid)">← zurück zu den aktuellen Einträgen</a>`:""}
+    </p>
+
+    <div class="card">
+      <div class="row" style="align-items:flex-end">
+        <div>
+          <label for="dateSel">Tag</label>
+          <select id="dateSel">
+            ${dates.length?dates.map(d=>`<option value="${d}" ${d===iso?"selected":""}>${new Date(d+"T12:00").toLocaleDateString("de-DE",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"})}</option>`).join(""):`<option>${todayISO()}</option>`}
+          </select>
+        </div>
+        <div class="btnrow" style="margin:0">
+          <button class="btn sec" id="expCsv" type="button">⬇ CSV (Excel)</button>
+          <button class="btn sec" id="expJson" type="button">⬇ JSON sichern</button>
+          <button class="btn sec" id="impJson" type="button">⬆ JSON einlesen</button>
+          <input type="file" id="impFile" accept=".json" class="hidden">
+        </div>
+      </div>
+
+      <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th>Name</th><th>Fach / Aufgabe</th><th>Ziel</th>
+          <th title="Zuversicht vorher → Zufriedenheit nachher">Vorher→Nachher</th>
+          <th>Check-ins</th><th>Status</th><th></th>
+        </tr></thead>
+        <tbody>
+          ${list.length?list.map(e=>`
+            <tr>
+              <td><b>${esc(e.name)}</b><br><small>${esc(e.erstellt)} Uhr</small></td>
+              <td>${fachLB(e.plan)}${e.plan.aufgabe||e.plan.typ||e.plan.sterne?`<br><small>${aufgabeInfo(e.plan)}</small>`:""}</td>
+              <td>${esc(e.plan.ziel)}</td>
+              <td style="white-space:nowrap">${e.plan.zuversicht} → ${e.reflexion?e.reflexion.zufriedenheit:"–"}</td>
+              <td>${e.checkins.map(c=>ampelSym(c.ampel)).join(" ")||"–"}</td>
+              <td>${statusBadge(e)}</td>
+              <td style="white-space:nowrap">
+                <button class="btn sec" data-det="${e.id}" type="button" style="padding:6px 12px">Details</button>
+                ${archiv?`<button class="btn sec" data-unarch="${e.id}" type="button" style="padding:6px 12px" title="Wiederherstellen">↩</button>`:""}
+                <button class="btn danger" data-del="${e.id}" type="button" style="padding:6px 12px">✕</button>
+              </td>
+            </tr>`).join(""):`<tr><td colspan="7"><i>${archiv?"Das Archiv ist leer.":"Für diesen Tag liegen keine Einträge vor."}</i></td></tr>`}
+        </tbody>
+      </table>
+      </div>
+
+      <div class="btnrow">
+        <button class="btn ghost" id="backStart" type="button">← Zur Schüleransicht</button>
+        <span class="spacer"></span>
+        ${!archiv?`<button class="btn sec" id="archAll" type="button">🗂 Auf null setzen (ins Archiv)</button>`:""}
+        <button class="btn danger" id="delAll" type="button">${archiv?"Archiv endgültig löschen":"Alles endgültig löschen"}</button>
+      </div>
+    </div>
+    <div id="detailBox"></div>
+  `;
+
+  $("#dateSel").onchange = ev => renderTeacher(ev.target.value, archiv);
+  $("#backStart").onclick = viewStart;
+  const toA = $("#toArchiv"); if(toA) toA.onclick = e=>{ e.preventDefault(); renderTeacher(null, true); };
+  const toK = $("#toAktuell"); if(toK) toK.onclick = e=>{ e.preventDefault(); renderTeacher(null, false); };
+
+  /* Auf null setzen: alles Aktuelle ins Archiv verschieben (bleibt erhalten!) */
+  const archBtn = $("#archAll");
+  if(archBtn) archBtn.onclick = ()=>{
+    if(!all.length){ toast("Keine aktuellen Einträge vorhanden."); return; }
+    if(confirm(`${all.length} Einträge ins Archiv verschieben? Die Schüleransicht startet dann bei null – im Archiv bleibt alles einsehbar.`)){
+      const l = loadEntries();
+      l.forEach(e=>{ if(!e.archiviert) e.archiviert = todayISO(); });
+      saveEntries(l);
+      toast("Ins Archiv verschoben ✓");
+      renderTeacher();
+    }
+  };
+
+  /* Wiederherstellen aus dem Archiv */
+  app.querySelectorAll("[data-unarch]").forEach(b=>{
+    b.onclick = ()=>{
+      const l = loadEntries();
+      const e = l.find(x=>x.id===b.dataset.unarch);
+      if(e){ delete e.archiviert; saveEntries(l); renderTeacher(iso, true); }
+    };
+  });
+
+  /* Details */
+  app.querySelectorAll("[data-det]").forEach(b=>{
+    b.onclick = ()=>{
+      const e = loadEntries().find(x=>x.id===b.dataset.det);
+      if(!e) return;
+      const r = e.reflexion;
+      $("#detailBox").innerHTML = `
+        <div class="card detail">
+          <h3>${esc(e.name)} · ${esc(e.datum)}</h3>
+          <dl>
+            <dt>Fach</dt><dd>${esc(e.plan.fach)}</dd>
+            <dt>Lernplan / Lernbereich</dt><dd>${e.plan.lernbereich?"LP "+e.plan.lernbereich:"–"}</dd>
+            <dt>Aufgabe</dt><dd>${esc(e.plan.aufgabe)||"–"}</dd>
+            <dt>Pflicht / Wahl</dt><dd>${esc(e.plan.typ)||"–"}</dd>
+            <dt>Schwierigkeit</dt><dd>${e.plan.sterne?"⭐".repeat(e.plan.sterne):"–"}</dd>
+            <dt>Ziel</dt><dd>${esc(e.plan.ziel)}</dd>
+            <dt>Strategien</dt><dd>${e.plan.strategien.map(esc).join(", ")||"–"}</dd>
+            <dt>Geplante Zeit</dt><dd>${esc(e.plan.dauer)}</dd>
+            <dt>Hilfsmittel</dt><dd>${esc(e.plan.hilfsmittel)||"–"}</dd>
+            <dt>Wenn-dann-Plan</dt><dd>${esc(e.plan.wenndann)||"–"}</dd>
+            <dt>Zuversicht (vorher)</dt><dd>${e.plan.zuversicht} / 10</dd>
+            <dt>Check-ins</dt><dd>${e.checkins.length?e.checkins.map(c=>`${c.zeit} ${c.ampel==="gruen"?"🟢":c.ampel==="gelb"?"🟡":"🔴"} ${esc(c.notiz)}`).join("\n"):"–"}</dd>
+            ${r?`
+            <dt>Ziel erreicht</dt><dd>${esc(r.zielErreicht)}</dd>
+            <dt>Gut funktioniert</dt><dd>${esc(r.gut)||"–"}</dd>
+            <dt>Schwierig</dt><dd>${esc(r.schwierig)||"–"}</dd>
+            <dt>Nächstes Mal</dt><dd>${esc(r.naechstesMal)||"–"}</dd>
+            <dt>Zufriedenheit (nachher)</dt><dd>${r.zufriedenheit} / 10</dd>`:`
+            <dt>Reflexion</dt><dd><i>noch nicht ausgefüllt</i></dd>`}
+          </dl>
+          <div class="btnrow"><button class="btn sec" onclick="document.getElementById('detailBox').innerHTML=''" type="button">Schließen</button></div>
+        </div>`;
+      if($("#detailBox").scrollIntoView) $("#detailBox").scrollIntoView({behavior:"smooth"});
+    };
+  });
+
+  /* Löschen */
+  app.querySelectorAll("[data-del]").forEach(b=>{
+    b.onclick = ()=>{
+      const e = loadEntries().find(x=>x.id===b.dataset.del);
+      if(!e) return;
+      if(confirm(`Eintrag von ${e.name} (${e.datum}) endgültig löschen?`)){
+        saveEntries(loadEntries().filter(x=>x.id!==e.id));
+        renderTeacher(iso, archiv);
+      }
+    };
+  });
+  $("#delAll").onclick = ()=>{
+    const ziel = archiv ? "alle ARCHIVIERTEN Einträge" : "alle AKTUELLEN Einträge";
+    if(confirm(`Wirklich ${ziel} endgültig löschen? Vorher ggf. als JSON sichern!`)){
+      if(confirm("Ganz sicher? Das kann nicht rückgängig gemacht werden.")){
+        saveEntries(loadEntries().filter(e => archiv ? !e.archiviert : !!e.archiviert));
+        renderTeacher(null, archiv);
+      }
+    }
+  };
+
+  /* CSV-Export (Semikolon + BOM für deutsches Excel) */
+  $("#expCsv").onclick = ()=>{
+    const rows = [[
+      "Datum","Name","Fach","Lernplan/Lernbereich","Aufgabe","Pflicht/Wahl","Sterne","Ziel","Strategien","Geplante Zeit",
+      "Hilfsmittel","Wenn-dann","Zuversicht vorher","Check-ins","Ziel erreicht","Gut funktioniert",
+      "Schwierig","Nächstes Mal","Zufriedenheit nachher"
+    ]];
+    loadEntries().filter(e=>e.iso===iso && (archiv ? !!e.archiviert : !e.archiviert)).forEach(e=>{
+      const r = e.reflexion||{};
+      rows.push([
+        e.datum, e.name, e.plan.fach, e.plan.lernbereich||"", e.plan.aufgabe, e.plan.typ||"", e.plan.sterne||"", e.plan.ziel,
+        e.plan.strategien.join(", "), e.plan.dauer, e.plan.hilfsmittel, e.plan.wenndann,
+        e.plan.zuversicht,
+        e.checkins.map(c=>`${c.zeit} ${c.ampel}${c.notiz?": "+c.notiz:""}`).join(" | "),
+        r.zielErreicht||"", r.gut||"", r.schwierig||"", r.naechstesMal||"", r.zufriedenheit??""
+      ]);
+    });
+    const csv = "\uFEFF"+rows.map(r=>r.map(c=>`"${String(c??"").replace(/"/g,'""')}"`).join(";")).join("\r\n");
+    download(`SRL_${iso}${archiv?"_Archiv":""}.csv`, csv, "text/csv;charset=utf-8");
+    toast("CSV exportiert ✓");
+  };
+
+  /* JSON-Export/-Import (zum Zusammenführen mehrerer Geräte) */
+  $("#expJson").onclick = ()=>{
+    download(`SRL_Sicherung_${todayISO()}.json`, JSON.stringify(loadEntries(),null,1), "application/json");
+    toast("JSON-Sicherung exportiert ✓");
+  };
+  $("#impJson").onclick = ()=>$("#impFile").click();
+  $("#impFile").onchange = ev=>{
+    const f = ev.target.files[0]; if(!f) return;
+    const rd = new FileReader();
+    rd.onload = ()=>{
+      try{
+        const neu = JSON.parse(rd.result);
+        if(!Array.isArray(neu)) throw 0;
+        const list = loadEntries();
+        const ids = new Set(list.map(e=>e.id));
+        let n = 0;
+        neu.forEach(e=>{ if(e&&e.id&&!ids.has(e.id)){ list.push(e); n++; } });
+        saveEntries(list);
+        toast(`${n} neue Einträge übernommen ✓`);
+        renderTeacher(null, archiv);
+      }catch(err){ toast("Datei konnte nicht gelesen werden."); }
+    };
+    rd.readAsText(f);
+  };
+}
+
+function download(name, content, mime){
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([content],{type:mime}));
+  a.download = name;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+
+/* ---------- Werkzeugkasten & Start ---------- */
+document.getElementById("fabToolbox").onclick = ()=>document.getElementById("toolbox").classList.add("open");
+document.getElementById("closeToolbox").onclick = ()=>document.getElementById("toolbox").classList.remove("open");
+document.getElementById("toolbox").addEventListener("click", e=>{
+  if(e.target.id==="toolbox") e.target.classList.remove("open");
+});
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape") document.getElementById("toolbox").classList.remove("open");
+});
+const logoHome = document.getElementById("logoHome");
+logoHome.onclick = viewStart;
+logoHome.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" ") viewStart(); });
+document.getElementById("teacherLink").onclick = e=>{ e.preventDefault(); viewTeacher(); };
+
+function tickClock(){
+  const c = document.getElementById("clock");
+  if(c) c.textContent = new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"}) + " Uhr";
+}
+tickClock();
+setInterval(tickClock, 10000);
+
+viewStart();
+</script>
+</body>
+</html>
